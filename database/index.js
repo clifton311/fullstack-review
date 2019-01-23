@@ -23,7 +23,12 @@ let repoSchema = mongoose.Schema({
 //new
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (repo) => {
+let save = (repos, callback) => {
+
+  repos.forEach(item => {
+    return
+  });
+
   var record = new Repo ({
     id: repo.id,
     name: repo.name,
@@ -42,4 +47,12 @@ let save = (repo) => {
   // the MongoDB
 };
 
+let find25 = (callback) => {
+  Repo.find()
+  .sort({stargazers_count: 1})
+  .limit(25)
+  .exec(callback);
+}
+
 module.exports.save = save;
+module.exports.find25 = find25;

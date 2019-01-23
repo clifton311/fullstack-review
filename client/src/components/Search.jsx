@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+
 
 class Search extends React.Component {
   constructor(props) {

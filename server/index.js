@@ -2,7 +2,7 @@ const express = require('express');
 let app = express();
 const bodyParser = require('body-parser');
 const helpers = require('../helpers/github');
-const database = require('../database/index')
+const database = require('../database/index');
 
 
 //serves up static files, looks in dist folder, looking for an index file and serves it first
@@ -12,13 +12,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/repos', function (request, response) {
-    console.log("request body----->>>>",request.body.key);
-  helpers.getReposByUsername(request.body.key, function(err){
+    //console.log("request body----->>>>", request.body.username[0].name);
+  helpers.getReposByUsername(request.body.username, function(err, repos){
     if (err) {
       console.log("we got an error with the getReposByUserName", err);
     } else {
-      database.save();
+      database.save(repos);
+      console.log('Saved');
     }
+    response.send("Saved");
   });
 
   // TODO - your code here!

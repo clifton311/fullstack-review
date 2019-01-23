@@ -11,49 +11,48 @@ class App extends React.Component {
       repos: []
     };
 
-    //this.search = this.search.bind(this);
+    this.search = this.search.bind(this);
     
   }
 
 
   componentDidMount() {
-    console.log('Component got here');
-   $.ajax({
-      method: "GET",
-      url: '/repos',
-
-   })
-   .done(function(data){
-     console.log("data",data);
-      this.setState({
-        repos: data
-      });
-   });
+    $.get('/repos', (data) => {
+      var json = JSON.parse(data);
+      this.setState({repos: json});
+  });
     
   }
 
-  search (term) {
-    console.log(`${term} was searched`);
-    // var obj = {
-    //   key: term
-    // };
-      $.ajax({
-        type: 'POST',
-        url: "/repos",
-        contentType: "application/json",
-        data: {data: JSON.stringify(term) }// has to go in as a data object that is stringified
-      })
-      .done(function(data){
-        console.log("Data Saved");
-        this.setState({
-          repos: data
+  // search (term) {
+  //   console.log(`${term} was searched`);
+  //   // var obj = {
+  //   //   key: term
+  //   // };
+  //     $.ajax({
+  //       type: 'POST',
+  //       url: "/repos",
+  //       contentType: "application/json",
+  //       data: {data: term }// has to go in as a data object that is stringified
+  //     })
+  //     .done(function(data){
+  //       console.log("Data Saved");
+  //       this.setState({
+  //         repos: data
+  //       });
+  //     });
+      search (term) {
+        
+        console.log(`${term} was searched`);
+        $.post('/repos', {username: term}, function(response) {
+          let json = JSON.parse(response);
+          this.setState({ repos:json});
         });
-      });
-
+      }
 
       //push the returned repos
     // TODO
-  }
+  
 
   // addRepos() {
   //   this.setState({
@@ -65,7 +64,7 @@ class App extends React.Component {
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos}/>
-      <Search onSearch={this.search.bind(this)}/>
+      <Search onSearch={this.search}/>
     </div>)
   }
 }

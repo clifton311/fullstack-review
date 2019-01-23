@@ -8,17 +8,17 @@ let getReposByUsername = (username, callback) => {
       url:`https://api.github.com/users/${username}/repos`,
       headers: {
         'User-Agent': 'request',
-        'Authorization': `token ${config.TOKEN}`
+        'Authorization': `token ${config.TOKEN}`,
+        
       }
     };
-    // request.get(options, function (error, response, body){
-  
+   
     request(options, (err, res, body) => {
       if (err) {
         console.log('YOU ARE WRONG!! ' + err);
       } else {
-        //console.log('SUCCESS YOU GOT REPOS', JSON.parse(body[0]));
-        callback(body);
+        //console.log('SUCCESS YOU GOT REPOS', JSON.parse(body));
+        callback(JSON.parse(body));
       }
     });
 
