@@ -23,7 +23,7 @@ let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (repos) => {
   
-  // const repoArray= [];
+ 
   repos.forEach(repo => {
     console.log("made it to the repo for each");
     var record = new Repo({
@@ -45,7 +45,7 @@ let save = (repos) => {
         console.log("added");
       }
     });
-    // repoArray.push(record);
+  
   });
 };
 

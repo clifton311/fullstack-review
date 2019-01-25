@@ -6,6 +6,7 @@ const RepoList = (props) => (
     <h4>Top Repo's by Size </h4>
     There are {props.reposhoe.length} repos.
     <table>
+
     <thead>
       <tr>
         <th>Forks</th>
@@ -13,18 +14,21 @@ const RepoList = (props) => (
         <th>Github User</th>
       </tr>
     </thead>
+
       <tbody>
       {props.reposhoe.map((data, index) => {
         return(
           <tr key={index}>
-            <td><a href={data.user_url}>{data.forks}</a></td>
-            <td><a href={data.repo_url}>{data.name}</a></td>
-            <td><a href={data.repo_url}>{data.owner_login}</a></td>
+            <td>{data.forks}</td>
+            <td>{data.name}</td>
+            <td>{data.owner_login}</td>
           </tr>
         );
       })}
       </tbody>
+
     </table>
+
   </div>
 );
 

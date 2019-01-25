@@ -18,8 +18,6 @@ class App extends React.Component {
     this.repoList();
   }
 
-
- 
   search(term) {
     $.post('/repos', { username: term }, (err, res) => {
       if (err) {
@@ -28,22 +26,20 @@ class App extends React.Component {
         console.log(`${term} was searched`);
         console.log(res);
       }
-    })
+    });
   }
 
   repoList() {
-    
     //call get request
     $.ajax({
       url: '/repos',
       method: 'GET',
       success:  function(data)  {
-        //call get request
-        console.log('Got the data from the server on ComponentDidMount:', data);
+        console.log('Got data', data);
         this.setState({
           repos: data
         });
-      }.bind(this)
+      }.bind(this) //The callback is made in a different context. You need to bind to this in order to have access inside the callback:
     });
   }
 
