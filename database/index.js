@@ -36,22 +36,22 @@ let save = (repos) => {
       forks: repo.forks
     });
     
-    record.save()
-    .then(console.log('saved'));
+    // record.save()
+    // .then(console.log('saved'));
+    Repo.findOneAndUpdate({id: repo.id}, record, {upsert: true} ,function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("added");
+      }
+    });
     // repoArray.push(record);
   });
-    // Repo.findOneAndUpdate({id: repo.id}, record, {upsert: true} ,function (err) {
-    //   if (err) {
-    //     console.log(err);
-    //   } else {
-    //     console.log("added");
-    //   }
-    // });
 };
 
 
 let getTop = (cb) => {
-  Repo.find().sort({size: -1}).limit(25).exec(cb);
+  Repo.find({}).sort({forks: -1}).limit(25).exec(cb);
 };
 
 module.exports.save = save;

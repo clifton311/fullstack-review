@@ -9,21 +9,13 @@ let getReposByUsername = (username, callback) => {
       headers: {
         'User-Agent': 'request',
         'Authorization': `token ${config.TOKEN}`,
-        
+        "Accept": "application/json"
       }
     };
    
-    request(options,callback);
-    //   var json = JSON.parse(res.body);
-    //   if (err) {
-    //     //callback(err, null);
-    //     console.log(err);
-    //   } else {
-    //     console.log('SUCCESS YOU GOT REPOS', json);
-    //     callback(null, json);
-    //   }
-    // });
-
+    request(options, callback);
+    
+    
 };
 
 module.exports.getReposByUsername = getReposByUsername;

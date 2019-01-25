@@ -3,28 +3,29 @@ import React from 'react';
 
 const RepoList = (props) => (
   <div>
-    <h4> Top Repo's by Size </h4>
-    There are {props.repos.length} repos.
+    <h4>Top Repo's by Size </h4>
+    There are {props.reposhoe.length} repos.
     <table>
     <thead>
       <tr>
-        <th>Username</th>
+        <th>Forks</th>
         <th>Repo Name</th>
-        <th>Repo Size </th>
+        <th>Github User</th>
       </tr>
     </thead>
       <tbody>
-      {props.repos.map((value, index, collection) => {
+      {props.reposhoe.map((data, index) => {
         return(
           <tr key={index}>
-            <td><a href={value.user_url}>{value.username}</a></td>
-            <td><a href={value.repo_url}>{value.name}</a></td>
+            <td><a href={data.user_url}>{data.forks}</a></td>
+            <td><a href={data.repo_url}>{data.name}</a></td>
+            <td><a href={data.repo_url}>{data.owner_login}</a></td>
           </tr>
         );
       })}
       </tbody>
     </table>
   </div>
-)
+);
 
 export default RepoList;

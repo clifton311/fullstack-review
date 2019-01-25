@@ -11,28 +11,13 @@ class App extends React.Component {
       repos: []
     };
     this.search = this.search.bind(this);
-    this.getRepos = this.getRepos.bind(this);
+    this.repoList = this.repoList.bind(this);
   }
 
   componentDidMount() {
-    this.getRepos();
+    this.repoList();
   }
 
-  // search (term) {
-  //   var myApp = this;
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: '/repos',
-  //     data: {
-  //       username:term
-  //     },
-  //     contentType: 'application/json',
-  //     success: function (data)  {
-  //       console.log(`${term} was searched`);
-  //       myApp.getRepos();
-  //     }
-  //   });
-  // }
 
  
   search(term) {
@@ -46,28 +31,27 @@ class App extends React.Component {
     })
   }
 
-    getRepos() {
-      var myApp = this;
-      //call get request
-      $.ajax({
-        url: '/repos',
-        method: 'GET',
-        success:  function(data)  {
-          //call get request
-          console.log('Got the data from the server on ComponentDidMount:', data);
-          myApp.setState({
-            repos: data
-          });
-        }
-      });
-    }
-
+  repoList() {
+    
+    //call get request
+    $.ajax({
+      url: '/repos',
+      method: 'GET',
+      success:  function(data)  {
+        //call get request
+        console.log('Got the data from the server on ComponentDidMount:', data);
+        this.setState({
+          repos: data
+        });
+      }.bind(this)
+    });
+  }
 
 
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
-      <RepoList repos={this.state.repos}/>
+      <RepoList reposhoe={this.state.repos}/>
       <Search onSearch={this.search}/>
     </div>)
   }
