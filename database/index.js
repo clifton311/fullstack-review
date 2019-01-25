@@ -1,15 +1,14 @@
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/fetcher', {useNewUrlParser: true});
+const mongoose = require('mongoose'); //mongoose is a module for mongodb, it allows us to talk to Mondb
+mongoose.connect('mongodb://localhost/fetcher', {useNewUrlParser: true});
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-//mongodb event listener
-db.once('open', function() {
-  console.log('We are connected!');
-});
+// mongoose.Promise = global.Promise;
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//   console.log ('connected');
+// });
 
-
-let repoSchema = mongoose.Schema({
+let repoSchema = new mongoose.Schema({
   // TODO: your schema here!
   id: Number,
   name: String,
@@ -20,39 +19,43 @@ let repoSchema = mongoose.Schema({
   forks: Number
 });
 
-//new
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (repos, callback) => {
-
-  repos.forEach(item => {
-    return
+let save = (repos) => {
+  
+  // const repoArray= [];
+  repos.forEach(repo => {
+    console.log("made it to the repo for each");
+    var record = new Repo({
+      id: repo.id,
+      name: repo.name,
+      fullname: repo.fullname,
+      size: repo.size,
+      owner_login: repo.owner.login,
+      stargazers_count: repo.stargazers_count,
+      forks: repo.forks
+    });
+    
+    record.save()
+    .then(console.log('saved'));
+    // repoArray.push(record);
   });
-
-  var record = new Repo ({
-    id: repo.id,
-    name: repo.name,
-    fullname: repo.fullname,
-    size: repo.size,
-    owner_login: repo.owner.login,
-    stargazers_count: repo.stargazers_count,
-    forks: repo.forks
-  });
-  record.save(function(err){
-    if (err) throw err;
-    console.log("Record sucessfully saved");
-  });
-  // TODO: Your code here
-  // This function should save a repo or repos to
-  // the MongoDB
+    // Repo.findOneAndUpdate({id: repo.id}, record, {upsert: true} ,function (err) {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     console.log("added");
+    //   }
+    // });
 };
 
-let find25 = (callback) => {
-  Repo.find()
-  .sort({stargazers_count: 1})
-  .limit(25)
-  .exec(callback);
-}
+
+let getTop = (cb) => {
+  Repo.find().sort({size: -1}).limit(25).exec(cb);
+};
 
 module.exports.save = save;
-module.exports.find25 = find25;
+module.exports.getTop = getTop;
+
+
+

@@ -10,55 +10,59 @@ class App extends React.Component {
     this.state = { 
       repos: []
     };
-
     this.search = this.search.bind(this);
-    
+    this.getRepos = this.getRepos.bind(this);
   }
 
-
   componentDidMount() {
-    $.get('/repos', (data) => {
-      var json = JSON.parse(data);
-      this.setState({repos: json});
-  });
-    
+    this.getRepos();
   }
 
   // search (term) {
-  //   console.log(`${term} was searched`);
-  //   // var obj = {
-  //   //   key: term
-  //   // };
-  //     $.ajax({
-  //       type: 'POST',
-  //       url: "/repos",
-  //       contentType: "application/json",
-  //       data: {data: term }// has to go in as a data object that is stringified
-  //     })
-  //     .done(function(data){
-  //       console.log("Data Saved");
-  //       this.setState({
-  //         repos: data
-  //       });
-  //     });
-      search (term) {
-        
-        console.log(`${term} was searched`);
-        $.post('/repos', {username: term}, function(response) {
-          let json = JSON.parse(response);
-          this.setState({ repos:json});
-        });
-      }
-
-      //push the returned repos
-    // TODO
-  
-
-  // addRepos() {
-  //   this.setState({
-  //     repos: this.data
+  //   var myApp = this;
+  //   $.ajax({
+  //     type: 'POST',
+  //     url: '/repos',
+  //     data: {
+  //       username:term
+  //     },
+  //     contentType: 'application/json',
+  //     success: function (data)  {
+  //       console.log(`${term} was searched`);
+  //       myApp.getRepos();
+  //     }
   //   });
   // }
+
+ 
+  search(term) {
+    $.post('/repos', { username: term }, (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(`${term} was searched`);
+        console.log(res);
+      }
+    })
+  }
+
+    getRepos() {
+      var myApp = this;
+      //call get request
+      $.ajax({
+        url: '/repos',
+        method: 'GET',
+        success:  function(data)  {
+          //call get request
+          console.log('Got the data from the server on ComponentDidMount:', data);
+          myApp.setState({
+            repos: data
+          });
+        }
+      });
+    }
+
+
 
   render () {
     return (<div>

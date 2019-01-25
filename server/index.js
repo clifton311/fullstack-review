@@ -1,39 +1,42 @@
 const express = require('express');
 let app = express();
-const bodyParser = require('body-parser');
-const helpers = require('../helpers/github');
-const database = require('../database/index');
+let gitHub = require('../helpers/github.js');
+let db = require('../database/index.js');
 
+var bodyParser = require('body-parser');
 
-//serves up static files, looks in dist folder, looking for an index file and serves it first
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/../client/dist'));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+///////////////////////////////////////////////////////////
 
-app.post('/repos', function (request, response) {
-    //console.log("request body----->>>>", request.body.username[0].name);
-  helpers.getReposByUsername(request.body.username, function(err, repos){
+app.post('/repos', function (req, res) {
+
+  let username = req.body.username;
+
+  console.log('username----------->', username);
+
+  gitHub.getReposByUsername(username, (err, res, body) => {
+    var json = JSON.parse(body);
     if (err) {
-      console.log("we got an error with the getReposByUserName", err);
+      console.log("got an error in getRepos function:");
     } else {
-      database.save(repos);
-      console.log('Saved');
+      console.log("response-------->>>", json);
+      db.save(json);
     }
-    response.send("Saved");
   });
-
-  // TODO - your code here!
-  // This route should take the github username provided
-  // and get the repo information from the github API, then
-  // save the repo information in the database
- 
-});
+  res.end();
+});  
 
 app.get('/repos', function (req, res) {
-  
-  // TODO - your code here!
-  // This route should send back the top 25 repos
+
+  db.getTop(function(err, docs){
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(docs);
+    }
+  });
 });
 
 let port = 1128;
@@ -41,4 +44,5 @@ let port = 1128;
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
 });
+
 

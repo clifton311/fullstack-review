@@ -13,19 +13,17 @@ let getReposByUsername = (username, callback) => {
       }
     };
    
-    request(options, (err, res, body) => {
-      if (err) {
-        console.log('YOU ARE WRONG!! ' + err);
-      } else {
-        //console.log('SUCCESS YOU GOT REPOS', JSON.parse(body));
-        callback(JSON.parse(body));
-      }
-    });
+    request(options,callback);
+    //   var json = JSON.parse(res.body);
+    //   if (err) {
+    //     //callback(err, null);
+    //     console.log(err);
+    //   } else {
+    //     console.log('SUCCESS YOU GOT REPOS', json);
+    //     callback(null, json);
+    //   }
+    // });
 
-    
-  // The options object has been provided to help you out, 
-  // but you'll have to fill in the URL
-
-}
+};
 
 module.exports.getReposByUsername = getReposByUsername;
